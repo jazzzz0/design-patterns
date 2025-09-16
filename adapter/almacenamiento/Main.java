@@ -2,7 +2,7 @@ package adapter.almacenamiento;
 public class Main {
     public static void main(String[] args) {
         String foto = "foto.jpg";
-        User user = new User("gdriv");
+        User user = new User("as3");
         String storage_config = user.get_storage_config();
 
         String request = "POST www.api.com/api/posts/\n-------Headers-------\nAuthorization: Bearer ajcofjdv.swier3nflj3.dfg\n-------Body-------\n{'image':'"+ foto +"'}";
@@ -19,7 +19,7 @@ class User {
         if (storage_selected == "gdrive" || storage_selected == "dropbox") {
             this.storage_config = storage_selected;
         } else {
-            this.storage_config = "onedrive";
+            this.storage_config = "as3";
         }
     }
     String get_storage_config(){
@@ -45,6 +45,9 @@ class PostView{
         if (storage=="dropbox"){
             foto_uploader = new DropboxAdapter();
         } 
+        if (storage=="as3"){
+            foto_uploader = new AmazonS3Adapter();
+        }
         if (foto_uploader == null){
             return new Exception().toString();
         }
@@ -80,6 +83,11 @@ class Drive {
     }
 }
 
+class AmazonS3 {
+    public String save_to_as3(String foto){
+        return foto + " se ha subido a www.s3.amazon.com/posts/" + foto;
+    }
+}
 
 // ----------------- INTERFAZ P/ ADAPTERS -----------------
 interface ISubidorFoto {
@@ -102,3 +110,9 @@ class GoogleDriveAdapter implements ISubidorFoto {
     }
 }
 
+class AmazonS3Adapter implements ISubidorFoto{
+    AmazonS3 adaptee = new AmazonS3();
+    public String subir_foto(String foto){
+        return adaptee.save_to_as3(foto);
+    }
+}
