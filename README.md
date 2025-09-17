@@ -10,7 +10,8 @@ Los patrones a practicar en principio son:
     - Strategy.
 - Estructurales:
     - Adapter,
-    - Composite.
+    - Composite,
+    - Decorator.
 
 ### Ejercicios hechos
 #### Adapter
