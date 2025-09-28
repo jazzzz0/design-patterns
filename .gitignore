@@ -1,1 +1,5 @@
 /singleton/
+
+*.class
+
+main_rename.txt
