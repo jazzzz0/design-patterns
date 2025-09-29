@@ -13,7 +13,7 @@ public class TaskManager {
     gestor.agregarTarea(tarea1);
     gestor.agregarTarea(tarea2);
     
-    LoggerListener loggerListener = new LoggerListener();
+    LoggerListener loggerListener = LoggerListener.getInstance();
     BackupListener backupListener = new BackupListener();
     NotificationListener notificationListener = new NotificationListener();
 
@@ -230,6 +230,18 @@ public class TaskManager {
   }
 
   static class LoggerListener implements TaskListener {
+    private static LoggerListener instance;
+
+    // se hace privado el constructor para que no se pueda acceder desde afuera
+    private LoggerListener(){}
+
+    public static LoggerListener getInstance(){
+      if (instance == null) {
+        instance = new LoggerListener();
+      }
+      return instance;
+    }
+
     @Override
     public void onEvent(TaskEvent event){
       if (event.type == TaskType.EXECUTION_START) {
