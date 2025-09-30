@@ -31,23 +31,12 @@ public class ReportGenerator {
       .build();
 
     // Configurar generador
-
     GeneradorReportes generador = new GeneradorReportes();
     generador.setReporte(reporte);
     
     // Seleccionar formato de exportación
     String formato = "pdf"; // puede ser "pdf", "excel", "html"
-    ExportadorReporte exportador;
-    
-    if ("pdf".equalsIgnoreCase(formato)) {
-      exportador = new ExportadorPDF();
-    } else if ("excel".equalsIgnoreCase(formato)) {
-      exportador = new ExportadorExcel();
-    } else {
-      exportador = new ExportadorHTML();
-    }
-    
-    generador.setExportador(exportador);
+    generador.setExportador(ExportadorFactory.crear(formato));
     
     // Generar reporte
     generador.generar();
@@ -293,6 +282,17 @@ public class ReportGenerator {
 
   interface ExportadorReporte {
     void exportar(Reporte reporte);
+  }
+
+  static class ExportadorFactory {
+    static ExportadorReporte crear(String formato) {
+      ExportadorReporte exportador = switch(formato.toLowerCase()){
+        case "pdf" -> new ExportadorPDF();
+        case "excel" -> new ExportadorExcel();
+        default -> new ExportadorHTML();
+      };
+      return exportador;
+    }
   }
 
   static class ExportadorPDF implements ExportadorReporte {
